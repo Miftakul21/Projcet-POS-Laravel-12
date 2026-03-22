@@ -29,13 +29,13 @@
 
     <!-- [ Main Content ] start -->
     <div class="row">
-        <!-- [ sample-page ] start -->
+        <!-- [ Pengguna-Page ] start -->
         <div class="col-sm-12">
             <div class="card">
                 <div class="card-header">
                     <div class="d-flex gap-2 align-items-center">
                         <h5>Pengguna</h5>
-                        <button href="#" class="btn btn-primary btn-sm px-3" data-bs-toggle="modal"
+                        <button class="btn btn-primary btn-sm px-3" data-bs-toggle="modal"
                             data-bs-target="#addPengguna">
                             + Add
                         </button>
@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <!-- [ sample-page ] end -->
+        <!-- [ Pengguna-page ] end -->
     </div>
     <!-- [ Main Content ] end -->
 </div>
@@ -76,7 +76,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" id="formAddPengguna" enctype="multipart/form-data">
+                <form id="formAddPengguna" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label fw-bold">Nama<span class="text-danger">*</span></label>
@@ -150,7 +150,7 @@
                 <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
             </div>
             <div class="modal-body">
-                <form action="" id="formEditPengguna" enctype="multipart/form-data">
+                <form id="formEditPengguna" enctype="multipart/form-data">
                     @csrf
                     <div class="mb-3">
                         <label for="name" class="form-label fw-bold">Nama<span class="text-danger">*</span></label>

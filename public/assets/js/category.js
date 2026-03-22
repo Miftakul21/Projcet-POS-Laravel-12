@@ -1,48 +1,45 @@
-// request get data pengguna
-let dataPengguna = () => {
-    fetch('/pengguna-get-data', {
+// request get data category
+let dataCategory = () => {
+    fetch('/category-get-data', {
         cache: 'no-store',
     })
         .then(response => response.json())
         .then(res => {
             const data = res.data;
-            const table = document.getElementById('table-pengguna');
+            const table = document.getElementById('table-category');
 
-            let row = ''
+            let row = '';
             let index = 1;
-            data.forEach(user => {
+            data.forEach(category => {
                 row += `
                     <tr>
                         <td scope="row">${index++}</td>
-                        <td>${user.name_user}</td>
-                        <td>${user.username_user}</td>
-                        <td>${user.nomor_telepon_user ?? ''}</td>
-                        <td>${user.role_user}</td>
+                        <td>${category.name_category}</td>
                         <td>
                             <div class="d-flex gap-2">
                                 <button class="btn btn-sm btn-warning btn-edit"
-                                    data-userid="${user.id_user}"
-                                    data-bs-toggle="modal" 
-                                    data-bs-target="#editPengguna">
+                                    data-categoryid="${category.id_category}"
+                                    data-bs-toggle="model"
+                                    data-bs-target="#editCategory">
                                     <i class="ti ti-edit"></i>
                                 </button>
-                                <button  class="btn btn-sm btn-danger btn-delete"
-                                    data-userid="${user.id_user}">
+                                <button class="btn btn-sm btn-danger btn-delete"
+                                    data-categoryid="${category.id_category}">
                                     <i class="ti ti-trash"></i>
                                 </button>
                             </div>
                         </td>
-                    </tr>    
-                    `
+                    </tr>
+                `
             });
             table.innerHTML = row;
-        })
+        });
 }
 
-dataPengguna();
+dataCategory();
 
-// request add pengguna
-document.getElementById('formAddPengguna').addEventListener('submit', function (e) {
+// request add category
+document.getElementById('formAddCategory').addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Ambil data dari form
@@ -55,97 +52,92 @@ document.getElementById('formAddPengguna').addEventListener('submit', function (
     });
 
     // Kirim data ke server menggunakan fetch
-    fetch('/pengguna-store', {
+    fetch('/category-store', {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
         },
         body: formData
-    })
-        .then(async response => {
-            const data = await response.json();
+    }).then(async response => {
+        const data = await response.json();
 
-            // set error
-            if (!response.ok) {
-                if (response.status === 422) {
-                    const errors = data.errors;
-                    for (let field in errors) {
-                        const errorEl = document.querySelector('.error-' + field);
-                        const inputEl = document.querySelector(`[name="${field}"]`);
+        // set error
+        if (!response.ok) {
+            if (response.status === 422) {
+                const errors = data.errors;
+                for (let field in errors) {
+                    const errorEl = document.querySelector('.error-' + field);
+                    const inputEl = document.querySelector(`[name="${field}"]`);
 
-                        if (errorEl) errorEl.innerText = errors[field][0];
-                        if (inputEl) inputEl.classList.add('is-invalid');
-                    }
+                    if (errorEl) errorEl.innerText = errors[field][0];
+                    if (inputEl) inputEl.classList.add('is-invalid');
                 }
-                throw new Error('VALIDATION');
             }
-            return data;
-        })
+            throw new Error('VALIDATION');
+        }
+        return data;
+    })
         .then(data => {
             Swal.fire({
-                position: "center",
-                icon: "success",
-                title: "Berhasil add pengguna",
+                position: 'center',
+                icon: 'success',
+                title: 'Berhasil add category',
                 showConfirmButton: false,
                 timer: 2000
             });
 
-            const modalEl = document.getElementById('addPengguna');
-            const modal = bootstrap.Modal.getInstance(modalEl);
+            const modalEl = document.getElementById('addCategory');
+            const modal = document.bootstrap.Modal.getInstance(modalEl);
 
             modal.hide();
 
-            modalEl.addEventListener('hidden.bs.modal', function () {
-                document.getElementById('formAddPengguna').reset();
-                dataPengguna();
-            }, { once: true });
+            modal.addEventListener('hidden.bs.modal', function () {
+                document.getElementById('formAddCategory').reset();
+                dataCategory();
+            });
         })
         .catch(error => {
             console.log(error);
-        });
+        })
 });
 
-// request get data detail pengguna
-const getDetailPengguna = (id) => {
-    fetch(`/pengguna-get-detail/${id}`)
+// request get data detail category
+const getDetailCategory = (id) => {
+    fetch(`/category-get-detail/${id}`)
         .then(res => res.json())
         .then(res => {
             const data = res.data;
 
-            // reset id user
-            document.getElementById('formEditPengguna').reset();
+            // reset id category
+            document.getElementById('formEditCategory').reset();
 
             // set data ke form edit
-            document.getElementById('name-edit').value = data.name_user ?? '';
-            document.getElementById('username-edit').value = data.username_user ?? '';
-            document.getElementById('email-edit').value = data.email_user ?? '';
-            document.getElementById('nomor_telepon-edit').value = data.nomor_telepon_user ?? '';
-            document.getElementById('role-edit').value = data.role_user ?? '';
+            document.getElementById('name-edit').value = data.name_category ?? '';
 
-            // simpan id user
-            document.getElementById('formEditPengguna').setAttribute('data-userid', data.id_user);
+            // simpan id category
+            document.getElementById('formEditCategory').setAttribute('data-categoryid', data.id_category);
         }).catch(error => console.log(error));
 }
 
-// request get data detail pengguna
+// request get data detail category
 document.addEventListener('click', function (e) {
     if (e.target.closest('.btn-edit')) {
         const button = e.target.closest('.btn-edit');
-        const id = button.getAttribute('data-userid');
-        getDetailPengguna(id);
+        const id = button.getAttribute('data-categoryid');
+        getDetailCategory(id);
     }
 });
 
-// request update pengguna
-document.getElementById('formEditPengguna').addEventListener('submit', function (e) {
+// request update category
+document.getElementById('formEditCategory').addEventListener('submit', function (e) {
     e.preventDefault();
 
     // Ambil data dari form
-    const form = document.getElementById('formEditPengguna');
+    const form = document.getElementById('data-categoryid');
     const formData = new FormData(this);
 
-    const id_user = form.getAttribute('data-userid');
-    formData.append('id_user', id_user);
+    const id_category = form.getAttribute('data-categoryid');
+    formData.append('id_category', id_category);
 
     // Reset error
     document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
@@ -153,8 +145,8 @@ document.getElementById('formEditPengguna').addEventListener('submit', function 
         el.classList.remove('is-invalid');
     });
 
-    // Kirim data ke server menggunakan fetch 
-    fetch('/pengguna-update', {
+    // Kirim data ke server menggunakan fetch
+    fetch('/category-update', {
         method: 'POST',
         headers: {
             'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content')
@@ -184,19 +176,19 @@ document.getElementById('formEditPengguna').addEventListener('submit', function 
             Swal.fire({
                 position: "center",
                 icon: "success",
-                title: "Berhasil update pengguna",
+                title: "Berhasil update category",
                 showConfirmButton: false,
                 timer: 1500
             });
 
-            const modalEl = document.getElementById('editPengguna');
+            const modalEl = document.getElementById('editCategory');
             const modal = bootstrap.Modal.getInstance(modalEl);
 
             modal.hide();
 
             modalEl.addEventListener('hidden.bs.modal', function () {
-                document.getElementById('formEditPengguna').reset();
-                dataPengguna();
+                document.getElementById('formEditCategory').reset();
+                dataCategory();
             }, { once: true });
         })
         .catch(error => {
@@ -204,14 +196,14 @@ document.getElementById('formEditPengguna').addEventListener('submit', function 
         })
 });
 
-// request delete pengguna
+// request delete category
 document.addEventListener('click', function (e) {
-    if (e.target.closest('.btn-danger')) {
+    if (e.target.closest('.bbtn-danger')) {
         const button = e.target.closest('.btn-delete');
-        const id = button.getAttribute('data-userid');
+        const id = button.getAttribute('data-categoryid');
 
         Swal.fire({
-            title: 'Yakin hapus pengguna?',
+            title: 'Yakin hapus kategori?',
             text: 'Data yang dihapus tidak bisa dikembalikan!',
             icon: 'warning',
             showConfirmButton: true,
@@ -222,7 +214,7 @@ document.addEventListener('click', function (e) {
             cancelButtonText: "Batal"
         }).then((result) => {
             if (result.isConfirmed) {
-                fetch('/pengguna-delete', {
+                fetch('/category-delete', {
                     method: 'POST',
                     headers: {
                         'X-CSRF-TOKEN': document
@@ -230,7 +222,7 @@ document.addEventListener('click', function (e) {
                             .getAttribute('content'),
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ id_user: id })
+                    body: JSON.stringify({ id_category: id })
                 }).then(async res => {
                     const data = await res.json();
                     if (!res.ok) throw new Error(data.message || 'Gagal delete');
@@ -239,20 +231,20 @@ document.addEventListener('click', function (e) {
                     Swal.fire({
                         position: "center",
                         icon: "success",
-                        title: "Pengguna berhasil dihapus",
+                        title: "Kategori berhasil dihapus",
                         showConfirmButton: false,
                         timer: 2000
                     });
 
-                    dataPengguna();
+                    dataCategory();
                 }).catch(error => {
                     Swal.fire({
                         icon: 'error',
                         title: 'Terjadi kesalahan pada server',
-                        text: 'Gagal menghapus pengguna',
+                        text: 'Gagal menghapus kategori'
                     });
-                });
+                })
             }
         });
     }
-}); 
+});

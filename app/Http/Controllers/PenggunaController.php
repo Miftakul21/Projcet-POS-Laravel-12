@@ -11,12 +11,12 @@ use Illuminate\Validation\ValidationException;
 
 class PenggunaController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         return view('pages.pengguna');
     }
 
-    public function getData(Request $request)
+    public function getData()
     {
         try {
             $user = User::select(
@@ -139,7 +139,7 @@ class PenggunaController extends Controller
                 'image'            => 'nullable|image|mimes:jpeg,png,jpg,gif|max:2048',
             ]);
 
-            // get data user``
+            // get data user
             $user = User::where('id', $request->id_user)->first();
 
             if (!$user) return response()->json([
@@ -180,7 +180,7 @@ class PenggunaController extends Controller
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Error update in PenggunaControlller: ' . $e->getMessage());
+            \Log::error('Error update in PenggunaController: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server',
                 'status'  => false
