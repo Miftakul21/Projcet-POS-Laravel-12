@@ -2,32 +2,34 @@
 
 namespace App\Http\Controllers;
 
-use App\Models\Category;
+use App\Models\Supplier;
 use Illuminate\Http\Request;
 use Illuminate\Validation\ValidationException;
 
-class CategoryController extends Controller
+class SupplierController extends Controller
 {
     public function index()
     {
-        return view('pages.category');
+        return view('pages.supplier');
     }
 
     public function getData()
     {
         try {
-            $category = Category::select(
-                'id AS id_category',
-                'name AS name_category'
+            $supplier = Supplier::select(
+                'id AS id_supplier',
+                'name AS name_supplier',
+                'nomor_telepon AS nomor_telepon_supplier',
+                'alamat AS alamat_supplier'
             )->get();
 
             return response()->json([
-                'message' => 'Data category ditemukan',
+                'message' => 'Data supplier ditemukan',
                 'status'  => true,
-                'data'    => $category
+                'data'    => $supplier
             ], 200);
         } catch (\Exception $e) {
-            \Log::error('Error getData in CategoryController: ' . $e->getMessage());
+            \Log::error('Error getData in SupploerController: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server',
                 'status'  => false
@@ -38,16 +40,18 @@ class CategoryController extends Controller
     public function getDetail($id)
     {
         try {
-            $category = Category::where('id', $id)->first();
+            $supplier = Supplier::where('id', $id)->first();
 
-            if (!$category) return response()->json([
-                'message' => 'Data category tidak ditemukan',
+            if (!$supplier) return response()->json([
+                'message' => 'Data supplier tidak ditemukan',
                 'status'  => false
             ], 404);
 
             $data = [
-                'id_category'   => $category->id,
-                'name_category' => $category->name
+                'id_supplier'            => $supplier->id,
+                'name_supplier'          => $supplier->name,
+                'nomor_telepon_supplier' => $supplier->nomor_telepon,
+                'alamat_supplier'        => $supplier->alamat
             ];
 
             return response()->json([
@@ -56,7 +60,7 @@ class CategoryController extends Controller
                 'data'    => $data
             ], 200);
         } catch (\Exception $e) {
-            \Log::error('Error getDetail in CategoryController: ' . $e->getMessage());
+            \Log::error('Error getDetail in SupplierController: ' . $e->getMessage());
             return response()->json([
                 'nessage' => 'Terjadi kesalahan pada server',
                 'status'  => false
@@ -68,23 +72,29 @@ class CategoryController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'name' => 'required|string|max:100'
+                'name'          => 'required|string',
+                'nomor_telepon' => 'string|max:30|nullable',
+                'alamat'        => 'nullable|string'
+            ], 200);
+
+            Supplier::create([
+                'name'          => $validatedData['name'],
+                'nomor_telepon' => $validatedData['nomor_telepon'],
+                'alamat'        => $validatedData['alamat']
             ]);
 
-            Category::create(['name' => $validatedData['name']]);
-
             return response()->json([
-                'message' => 'Berhasil tambah category',
+                'message' => 'Berhasil tambah supplier',
                 'status'  => true
             ], 200);
         } catch (ValidationException $e) {
-            \Log::error('Error validation store in CategoryController: ' . $e->getMessage());
+            \Log::error('Error validation store in SupplierController: ' . $e->getMessage());
             return response()->json([
                 'status' => false,
                 'errors' => $e->errors()
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Error store in CategoryController: ' . $e->getMessage());
+            \Log::error('Error store in SupplierController: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server',
                 'status'  => false
@@ -96,32 +106,36 @@ class CategoryController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'name' => 'required|string|max:100',
+                'name'          => 'required|string',
+                'nomor_telepon' => 'nullable|max:30|string',
+                'alamat'        => 'nullable|string',
             ]);
 
-            // get data category
-            $category = Category::where('id', $request->id_category)->first();
+            // get data supplier
+            $supplier = Supplier::where('id', $request->id_supplier)->first();
 
-            if (!$category) return response()->json([
-                'message' => 'Data category tidak ditemukan',
+            if (!$supplier) return response()->json([
+                'message' => 'Data supplier tidak ditemukan',
                 'status'  => false
             ], 404);
 
-            $category->name = $validatedData['name'];
-            $category->save();
+            $supplier->name          = $validatedData['name'];
+            $supplier->nomor_telepon = $validatedData['nomor_telepon'];
+            $supplier->alamat        = $validatedData['alamat'];
+            $supplier->save();
 
             return response()->json([
-                'message' => 'Berhasil update category',
-                'status'  => true,
+                'message' => 'Berhasil update supplier',
+                'status'  => true
             ], 200);
         } catch (ValidationException $e) {
-            \Log::error('Error validation update in CategoryController: ' . $e->getMessage());
+            \Log::error('Error validation update in SupplierController: ' . $e->getMessage());
             return response()->json([
                 'status' => false,
                 'errors' => $e->errors(),
             ], 422);
         } catch (\Exception $e) {
-            \Log::error('Error update in CategoryController: ' . $e->getMessage());
+            \Log::error('Error update in SupplierController: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server',
                 'status'  => false
@@ -132,17 +146,17 @@ class CategoryController extends Controller
     public function delete(Request $request)
     {
         try {
-            $category = Category::where('id', $request->id_category)->first();
+            $supplier = Supplier::where('id', $request->id_supplier)->first();
 
-            if (!$category) return response()->json([
+            if (!$supplier) return response()->json([
                 'message' => 'Data pengguna tidak ditemukan',
                 'status'  => false
             ], 404);
 
-            $category->delete();
+            $supplier->delete();
 
             return response()->json([
-                'message' => 'Berhasil hapus category',
+                'message' => 'Berhasil hapus supplier',
                 'status'  => true,
             ], 200);
         } catch (\Exception $e) {
