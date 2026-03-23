@@ -75,7 +75,7 @@ class SupplierController extends Controller
                 'name'          => 'required|string',
                 'nomor_telepon' => 'string|max:30|nullable',
                 'alamat'        => 'nullable|string'
-            ], 200);
+            ]);
 
             Supplier::create([
                 'name'          => $validatedData['name'],

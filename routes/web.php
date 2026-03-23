@@ -3,12 +3,8 @@
 use App\Http\Controllers\DashboardController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\SupplierController;
 use Illuminate\Support\Facades\Route;
-
-// Route::get('/', function () {
-//     return view('test');
-// });
-
 
 Route::get('/', [DashboardController::class, 'index'])->name('dashboard');
 
@@ -27,3 +23,11 @@ Route::post('/category-update', [CategoryController::class, 'update']);
 Route::post('/category-delete', [CategoryController::class, 'delete']);
 Route::get('/category-get-data', [CategoryController::class, 'getData']);
 Route::get('/category-get-detail/{id}', [CategoryController::class, 'getDetail']);
+
+// supplier
+Route::get('/supplier', [SupplierController::class, 'index'])->name('supplier');
+Route::post('/supplier-store', [SupplierController::class, 'store']);
+Route::post('/supplier-update', [SupplierController::class, 'update']);
+Route::post('/supplier-delete', [SupplierController::class, 'delete']);
+Route::get('/supplier-get-data', [SupplierController::class, 'getData']);
+Route::get('/supplier-get-detail/{id}', [SupplierController::class, 'getDetail']);

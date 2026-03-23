@@ -132,6 +132,14 @@
                             <span class="pc-mtext">Category</span></a>
                     </li>
 
+                    <li class="pc-item">
+                        <a href="{{ route('supplier')}}" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="pc-mtext">Supplier</span></a>
+                    </li>
+
                     <li class="pc-item pc-caption">
                         <label>Authentication</label>
                     </li>
