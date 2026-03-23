@@ -1,5 +1,5 @@
 @extends('layouts.app')
-@section(content)
+@section('content')
 <div class="pc-content">
     <!-- [ breadcrumb ] start -->
     <div class="page-header">

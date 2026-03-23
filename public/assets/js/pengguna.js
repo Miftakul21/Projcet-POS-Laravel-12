@@ -10,8 +10,16 @@ let dataPengguna = () => {
 
             let row = ''
             let index = 1;
-            data.forEach(user => {
-                row += `
+
+            if (!data || data.length === 0) {
+                row = `
+                    <tr>
+                        <td colspan="6" class="text-center text-secondary fw-bold">Data not found</td>
+                    </tr>
+                `
+            } else {
+                data.forEach(user => {
+                    row += `
                     <tr>
                         <td scope="row">${index++}</td>
                         <td>${user.name_user}</td>
@@ -34,7 +42,8 @@ let dataPengguna = () => {
                         </td>
                     </tr>    
                     `
-            });
+                });
+            }
             table.innerHTML = row;
         })
 }

@@ -10,8 +10,18 @@ let dataCategory = () => {
 
             let row = '';
             let index = 1;
-            data.forEach(category => {
-                row += `
+
+            if (!data || data.length === 0) {
+                row = `
+                    <tr>
+                        <td colspan="3" class="text-center text-secondary fw-bold">
+                            Data not found
+                        </td>
+                    </tr>
+                `
+            } else {
+                data.forEach(category => {
+                    row += `
                     <tr>
                         <td scope="row">${index++}</td>
                         <td>${category.name_category}</td>
@@ -19,7 +29,7 @@ let dataCategory = () => {
                             <div class="d-flex gap-2">
                                 <button class="btn btn-sm btn-warning btn-edit"
                                     data-categoryid="${category.id_category}"
-                                    data-bs-toggle="model"
+                                    data-bs-toggle="modal"
                                     data-bs-target="#editCategory">
                                     <i class="ti ti-edit"></i>
                                 </button>
@@ -31,9 +41,18 @@ let dataCategory = () => {
                         </td>
                     </tr>
                 `
-            });
+                });
+            }
             table.innerHTML = row;
-        });
+        }).catch(error => {
+            document.getElementById('table-category').innerHTML = `
+                <tr>
+                    <td colspan="3" class="text-center text-danger py-4">
+                        Gagal memmuat data category
+                    </td>
+                </tr>
+            `
+        })
 }
 
 dataCategory();
@@ -87,14 +106,14 @@ document.getElementById('formAddCategory').addEventListener('submit', function (
             });
 
             const modalEl = document.getElementById('addCategory');
-            const modal = document.bootstrap.Modal.getInstance(modalEl);
+            const modal = bootstrap.Modal.getInstance(modalEl);
 
             modal.hide();
 
-            modal.addEventListener('hidden.bs.modal', function () {
+            modalEl.addEventListener('hidden.bs.modal', function () {
                 document.getElementById('formAddCategory').reset();
                 dataCategory();
-            });
+            }, { once: true });
         })
         .catch(error => {
             console.log(error);
@@ -133,7 +152,7 @@ document.getElementById('formEditCategory').addEventListener('submit', function 
     e.preventDefault();
 
     // Ambil data dari form
-    const form = document.getElementById('data-categoryid');
+    const form = document.getElementById('formEditCategory');
     const formData = new FormData(this);
 
     const id_category = form.getAttribute('data-categoryid');
@@ -198,7 +217,7 @@ document.getElementById('formEditCategory').addEventListener('submit', function 
 
 // request delete category
 document.addEventListener('click', function (e) {
-    if (e.target.closest('.bbtn-danger')) {
+    if (e.target.closest('.btn-danger')) {
         const button = e.target.closest('.btn-delete');
         const id = button.getAttribute('data-categoryid');
 

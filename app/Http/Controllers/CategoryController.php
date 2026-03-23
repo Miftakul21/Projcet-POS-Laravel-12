@@ -68,7 +68,7 @@ class CategoryController extends Controller
     {
         try {
             $validatedData = $request->validate([
-                'name' => 'requeired|string|max:100'
+                'name' => 'required|string|max:100'
             ]);
 
             Category::create(['name' => $validatedData['name']]);
