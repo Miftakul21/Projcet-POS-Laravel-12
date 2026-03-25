@@ -140,6 +140,14 @@
                             <span class="pc-mtext">Supplier</span></a>
                     </li>
 
+                    <li class="pc-item">
+                        <a href="{{ route('barang')}}" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="pc-mtext">Barang</span></a>
+                    </li>
+
                     <li class="pc-item pc-caption">
                         <label>Authentication</label>
                     </li>
@@ -560,7 +568,7 @@
         <div class="footer-wrapper container-fluid">
             <div class="row">
                 <div class="col my-1">
-                    <p class="m-0">My POS ♥ crafted by <a href="#" target="_blank">Miftakul Huda</a></p>
+                    <p class="m-0">My POS ♥ created by <a href="#" target="_blank">Miftakul Huda</a></p>
                 </div>
                 <div class="col-auto my-1">
                     <ul class="list-inline footer-link mb-0">
@@ -586,33 +594,33 @@
     <!-- Buy Now Link Script -->
     <script defer src="https://fomo.codedthemes.com/pixel/CDkpF1sQ8Tt5wpMZgqRvKpQiUhpWE3bc"></script>
     <script>
-        change_box_container('false');
+    change_box_container('false');
     </script>
     <script>
-        layout_caption_change('true');
+    layout_caption_change('true');
     </script>
     <script>
-        layout_rtl_change('false');
+    layout_rtl_change('false');
     </script>
     <script>
-        preset_change("preset-1");
+    preset_change("preset-1");
     </script>
 
     <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const links = document.querySelectorAll('a');
+    document.addEventListener("DOMContentLoaded", function() {
+        const links = document.querySelectorAll('a');
 
-            links.forEach(link => {
-                link.addEventListener('click', function() {
-                    if (this.getAttribute('href') === '#' || this.getAttribute('taget') ===
-                        '_blank') return;
+        links.forEach(link => {
+            link.addEventListener('click', function() {
+                if (this.getAttribute('href') === '#' || this.getAttribute('taget') ===
+                    '_blank') return;
 
-                    setTimeout(() => {
-                        document.getElementById('loading-overlay').style.display = 'flex';
-                    }, 100);
-                });
+                setTimeout(() => {
+                    document.getElementById('loading-overlay').style.display = 'flex';
+                }, 100);
             });
         });
+    });
     </script>
 </body>
 <!-- [Body] end -->

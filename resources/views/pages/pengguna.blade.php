@@ -61,7 +61,7 @@
                 </div>
             </div>
         </div>
-        <!-- [ Pengguna-page ] end -->
+        <!-- [ Pengguna-Page ] end -->
     </div>
     <!-- [ Main Content ] end -->
 </div>
@@ -132,8 +132,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-secondary">Simpan</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-primary">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
             </div>
             </form>
         </div>
@@ -206,8 +206,8 @@
                     </div>
             </div>
             <div class="modal-footer">
-                <button type="submit" class="btn btn-secondary">Simpan</button>
-                <button type="button" class="btn btn-primary" data-bs-dismiss="modal">Batal</button>
+                <button type="submit" class="btn btn-priamry">Simpan</button>
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Batal</button>
             </div>
             </form>
         </div>

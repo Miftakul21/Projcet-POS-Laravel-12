@@ -29,7 +29,7 @@ class SupplierController extends Controller
                 'data'    => $supplier
             ], 200);
         } catch (\Exception $e) {
-            \Log::error('Error getData in SupploerController: ' . $e->getMessage());
+            \Log::error('Error getData in SupplierController: ' . $e->getMessage());
             return response()->json([
                 'message' => 'Terjadi kesalahan pada server',
                 'status'  => false
@@ -62,7 +62,7 @@ class SupplierController extends Controller
         } catch (\Exception $e) {
             \Log::error('Error getDetail in SupplierController: ' . $e->getMessage());
             return response()->json([
-                'nessage' => 'Terjadi kesalahan pada server',
+                'message' => 'Terjadi kesalahan pada server',
                 'status'  => false
             ], 500);
         }
