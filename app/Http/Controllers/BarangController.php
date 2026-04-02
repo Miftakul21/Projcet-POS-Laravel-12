@@ -24,7 +24,7 @@ class BarangController extends Controller
                 'brand_barang',
                 'stok AS stok_barang',
                 'harga_eceran AS harga_eceran_barang',
-                'harga_reseller AS harga_barang',
+                'harga_reseller AS harga_reseller_barang',
                 'deskripsi AS deskripsi_barang'
             )->get();
 
@@ -53,15 +53,15 @@ class BarangController extends Controller
             ], 404);
 
             $data = [
-                'id_barang'           => $barang->id,
-                'name_barang'         => $barang->name,
-                'kategori_barang'     => $barang->kategori,
-                'satuan_barang'       => $barang->satuan,
-                'brand_barang'        => $barang->brand_barang,
-                'stok_barang'         => $barang->stok,
-                'harga_eceran_barang' => $barang->harga_eceran,
-                'harga_reseller'      => $barang->harga_reseller,
-                'deskripsi_barang'    => $barang->deskripsi
+                'id_barang'             => $barang->id,
+                'name_barang'           => $barang->name,
+                'kategori_barang'       => $barang->kategori,
+                'satuan_barang'         => $barang->satuan,
+                'brand_barang'          => $barang->brand_barang,
+                'stok_barang'           => $barang->stok,
+                'harga_eceran_barang'   => $barang->harga_eceran,
+                'harga_reseller_barang' => $barang->harga_reseller,
+                'deskripsi_barang'      => $barang->deskripsi
             ];
 
             return response()->json([

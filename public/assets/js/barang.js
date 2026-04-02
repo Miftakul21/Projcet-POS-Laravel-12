@@ -80,7 +80,7 @@ let dataBarang = () => {
 
 dataBarang();
 
-// request data barang
+// request add data barang
 document.getElementById('formAddBarang').addEventListener('submit', function (e) {
     e.preventDefault();
 
@@ -172,7 +172,7 @@ const getDetailBarang = (id) => {
             document.getElementById('deskripsi-edit').value = data.deskripsi_barang ?? '';
 
             // simpan id barang
-            document.getElementById('formEditBarang').setAttribute('data-barangid', data.id_user);
+            document.getElementById('formEditBarang').setAttribute('data-barangid', data.id_barang);
         }).catch(error => console.log(error));
 }
 
@@ -183,6 +183,88 @@ document.addEventListener('click', function (e) {
         const id = button.getAttribute('data-barangid');
         getDetailBarang(id);
     }
+});
+
+// request update barang
+document.getElementById('formEditBarang').addEventListener('submit', function (e) {
+    e.preventDefault();
+
+    // Ambil data dari form
+    const form = document.getElementById('formEditBarang');
+    const formData = new FormData(this);
+
+    // convert rupiah ke number
+    let hargaEceran = formData.get('harga_eceran') || '';
+    let hargaReseller = formData.get('harga_reseller') || '';
+
+    hargaEceran = hargaEceran.replace(/[^0-9]/g, '');
+    hargaReseller = hargaReseller.replace(/[^0-9]/g, '');
+
+    formData.delete('harga_eceran');
+    formData.delete('harga_reseller');
+
+    if (hargaEceran !== '') {
+        formData.append('harga_eceran', hargaEceran);
+    }
+
+    if (hargaReseller !== '') {
+        formData.append('harga_reseller', hargaReseller);
+    }
+
+    const id_barang = form.getAttribute('data-barangid');
+    formData.append('id_barang', id_barang);
+
+    document.querySelectorAll('.text-danger').forEach(el => el.innerText = '');
+    document.querySelectorAll('.form-control, .form-select').forEach(el => {
+        el.classList.remove('is-invalid');
+    });
+
+    // Kirim data ke server menggunakan fetch
+    fetch('/barang-update', {
+        method: 'POST',
+        headers: {
+            'X-CSRF-TOKEN': document.querySelector('meta[name="csrf-token"]').getAttribute('content'),
+        },
+        body: formData
+    })
+        .then(async response => {
+            const data = await response.json();
+
+            // set error
+            if (!response.ok) {
+                if (response.status === 422) {
+                    const errors = data.errors;
+                    for (let field in errors) {
+                        const errorEl = document.querySelector('.error-' + field);
+                        const inputEl = document.querySelector(`[name="${field}"]`);
+
+                        if (errorEl) errorEl.innerText = errors[field][0];
+                        if (inputEl) inputEl.classList.add('is-invalid');
+                    }
+                }
+                throw new Error('VALIDATION');
+            }
+            return data;
+        })
+        .then(data => {
+            Swal.fire({
+                position: "center",
+                icon: "success",
+                title: "Berhasil update barang",
+                showConfirmButton: false,
+                timer: 1500
+            });
+
+            const modalEl = document.getElementById('editBarang');
+            const modal = bootstrap.Modal.getInstance(modalEl);
+
+            modal.hide();
+
+            modalEl.addEventListener('hidden.bs.modal', function () {
+                document.getElementById('formEditBarang').reset();
+                dataBarang();
+            }, { once: true });
+        });
 });
 
 // request delete barang
@@ -211,7 +293,7 @@ document.addEventListener('click', function (e) {
                             .getAttribute('content'),
                         'Content-Type': 'application/json'
                     },
-                    body: JSON.stringify({ id_user: id })
+                    body: JSON.stringify({ id_barang: id })
                 }).then(async res => {
                     const data = await res.json();
                     if (!res.ok) throw new Error(data.message || 'Gagal delete');
@@ -225,7 +307,7 @@ document.addEventListener('click', function (e) {
                         timer: 2000
                     });
 
-                    dataPengguna();
+                    dataBarang();
                 }).catch(error => {
                     Swal.fire({
                         icon: 'error',

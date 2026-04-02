@@ -148,6 +148,15 @@
                             <span class="pc-mtext">Barang</span></a>
                     </li>
 
+                    <li class="pc-item">
+                        <a href="{{route('barang-masuk')}}" class="pc-link">
+                            <span class="pc-micon">
+                                <i class="ti ti-users"></i>
+                            </span>
+                            <span class="pc-mtext">Barang Masuk</span>
+                        </a>
+                    </li>
+
                     <li class="pc-item pc-caption">
                         <label>Authentication</label>
                     </li>

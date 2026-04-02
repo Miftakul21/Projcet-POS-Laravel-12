@@ -240,31 +240,5 @@
     </div>
 </div>
 
-<script>
-/*
-const formatRupiah = (number) => {
-    let number_string = number.replace(/[^,\d]/g, '').toString(),
-        split = number_string.split(','),
-        sisa = split[0].length % 3,
-        rupiah = split[0].substr(0, sisa),
-        ribuan = split[0].substr(sisa).match(/\d{3}/gi);
-
-    if (ribuan) {
-        let separator = sisa ? '.' : '';
-        rupiah += separator + ribuan.join('.');
-    }
-
-    return rupiah ? 'Rp. ' + rupiah : '';
-}
-
-document.getElementById('harga_eceran').addEventListener('keyup', function(e) {
-    this.value = formatRupiah(this.value);
-})
-
-document.getElementById('harga_reseller').addEventListener('keyup', function(e) {
-    this.value = formatRupiah(this.value);
-});
-*/
-</script>
 <script src="{{ asset('assets/js/barang.js') }}"></script>
 @endsection

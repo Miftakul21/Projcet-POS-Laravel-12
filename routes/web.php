@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\PenggunaController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\SupplierController;
@@ -40,3 +41,15 @@ Route::post('/barang-update', [BarangController::class, 'update']);
 Route::post('/barang-delete', [BarangController::class, 'delete']);
 Route::get('/barang-get-data', [BarangController::class, 'getData']);
 Route::get('/barang-get-detail/{id}', [BarangController::class, 'getDetail']);
+
+/*
+    Inventory
+    barang masuk
+*/
+Route::get('/barang-masuk', [InventoryController::class, 'pageBarangMasuk'])->name('barang-masuk');
+Route::get('/barang-retur', [InventoryController::class, 'pageBarangKeluar'])->name('barang-retur');
+Route::post('/barang-masuk-store', [InventoryController::class, 'store']);
+Route::post('/barang-masuk-update', [InventoryController::class, 'update']);
+Route::post('/barang-masuk-delete', [InventoryController::class, 'delete']);
+Route::get('/barang-masuk-get-data', [InventoryController::class, 'getData']);
+Route::get('/barang-masuk-get-detail/{id}', [InventoryController::class, 'getDetail']);
